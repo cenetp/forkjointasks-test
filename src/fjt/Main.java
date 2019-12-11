@@ -2,7 +2,10 @@ package fjt;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
+import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveAction;
 
 public class Main extends RecursiveAction {
@@ -13,13 +16,13 @@ public class Main extends RecursiveAction {
     this.video = video;
   }
 
-  private List<VideoCutAction> getClips() {
-    List<VideoCutAction> subtasks = new ArrayList<>();
+  private List<VideoClipAction> getClips() {
+    List<VideoClipAction> subtasks = new ArrayList<>();
 
     int random = (int) (Math.random() * 10 + 1);
     System.out.println("Starting " + random + " random clips...\n");
     for (int i = 0; i < random; i++) {
-      subtasks.add(new VideoCutAction(video, (int) (Math.random() * 1000 + 1)));
+      subtasks.add(new VideoClipAction(video, (int) (Math.random() * 1000 + 1)));
     }
 
     return subtasks;
@@ -34,7 +37,9 @@ public class Main extends RecursiveAction {
     }
   }
 
-  public static void main(String[] args) {
-    new Main(new Video()).compute();
+  public static void main(String[] args) throws ExecutionException, InterruptedException {
+    Main m = new Main(new Video());
+    Future f = ForkJoinPool.commonPool().submit(m);
+    f.get();
   }
 }

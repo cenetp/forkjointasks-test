@@ -3,11 +3,11 @@ package fjt;
 import java.util.List;
 import java.util.concurrent.RecursiveTask;
 
-public class VideoCutAction extends RecursiveTask {
+public class VideoClipAction extends RecursiveTask {
   private int length;
   private List<String> videoStream;
 
-  VideoCutAction(Video video, int length) {
+  VideoClipAction(Video video, int length) {
     this.length = length;
     this.videoStream = video.getVideoStream();
   }
